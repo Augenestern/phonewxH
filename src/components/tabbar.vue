@@ -7,7 +7,7 @@
             <div class="tab-bar-border"></div>
             <div v-for="(item, index) in tablist" :key="index" class="tab-bar-item" :data-id="index" @click="jump(item)">
                 <img :src="getAssetsFile(item)" />
-                <div :style="{ color: current == item.index ? '#319ef8' : 'black' }"
+                <div :style="{ color: current == item.pagePath ? '#319ef8' : 'black' }"
                     style=" margin-top: 2px; font-size: 12px">
                     {{ item.text }}
                 </div>
@@ -19,15 +19,18 @@
 <script setup lang="ts">
 import { allRole } from "@/routes/role";
 const router = new (useRouter as any)();
+const route = new (useRoute as any)();
 let role: any = localStorage.getItem("role");
 let tablist: any = ref(allRole[role]);
-let current = ref(0)
+let current = route.path
+console.log(current);
+
 const getAssetsFile = (item: any) => {
-    let url = current.value == item.index ? item.selectedIconPath : item.iconPath
+    let url = current == item.pagePath ? item.selectedIconPath : item.iconPath
     return new URL(url, import.meta.url).href
 }
 const jump = (e: any) => {
-    current.value = e.index
+    current = e.pagePath
     router.push(e.pagePath);
 };
 </script>

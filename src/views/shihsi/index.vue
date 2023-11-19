@@ -2,7 +2,7 @@
   <div>
     <div class="topTitle">
       <div class="topTitle-name">气站</div>
-      <img src="@/assets/ic_stock.png" alt="">
+      <img  src="@/assets/数据统计.png" alt="">
     </div>
     <van-tabs v-model:active="active" @click-tab="onClickTab" line-width="33vw" line-height="1px" sticky animated swipeable
       offset-top="4vh">
@@ -45,12 +45,12 @@ onUnmounted(() => { });
   display: flex;
   align-items: center;
   &-name{
-    margin-left: 10px;
+    margin-left: 5vw;
     margin-top: 1vh;
   }
   img{
     margin-left: 4px;
-    width: 22px;
+    width: 18px;
     margin-top: 1vh;
   }
 }

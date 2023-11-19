@@ -5,44 +5,44 @@
             <div class="echCard cardOne">
                 <div class="cardOne-hang" style="border-bottom:1px solid #a5d1f5;">
                     <div class="cardOne-hang-lie">
+                        <div class="cardone-numFont">0000</div>
                         <div class="cardone-texFont">用气量</div>
-                        <div class="cardone-numFont">0000</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
+                        <div class="cardone-numFont">0000</div>
                         <div class="cardone-texFont">总量</div>
-                        <div class="cardone-numFont">0000</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
+                        <div class="cardone-numFont">0000</div>
                         <div class="cardone-texFont">温度</div>
-                        <div class="cardone-numFont">0000</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-texFont">压力</div>
                         <div class="cardone-numFont">0000</div>
+                        <div class="cardone-texFont">压力</div>
                     </div>
                 </div>
                 <div class="cardOne-hang">
                     <div class="cardOne-hang-lie">
+                        <div class="cardone-numFont">0000</div>
                         <div class="cardone-texFont">流量</div>
-                        <div class="cardone-numFont">0000</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
+                        <div class="cardone-numFont">0000</div>
                         <div class="cardone-texFont">前端压力</div>
-                        <div class="cardone-numFont">0000</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
+                        <div class="cardone-numFont">0000</div>
                         <div class="cardone-texFont">泄露</div>
-                        <div class="cardone-numFont">0000</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-texFont">电池</div>
                         <div class="cardone-numFont">0000</div>
+                        <div class="cardone-texFont">电池</div>
                     </div>
                 </div>
             </div>
@@ -113,12 +113,14 @@ onUnmounted(() => {
 
 <style lang="less" scoped>
 .cardone-numFont {
-    margin-top: 8px;
+    // color: rgb(36, 128, 204);
     color: #319ef8;
 }
 
 .cardone-texFont {
+    margin-top: 8px;
     font-size: 12px;
+    color: #6c6d6d;
 }
 
 .cardLine {

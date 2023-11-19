@@ -12,8 +12,12 @@
 const router = new (useRouter as any)();
 
 const toMain = () => {
-  localStorage.setItem("role","普通用户");
-  router.push("/shishi");
+  localStorage.setItem("role", "管理员");
+  if (localStorage.getItem('role') == "管理员") {
+    router.push("/zhandian");
+  } else {
+    router.push("/shishi");
+  }
 };
 onMounted(() => {
 });

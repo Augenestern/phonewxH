@@ -42,7 +42,7 @@ onUnmounted(() => { });
   padding-bottom: 2vh;
 
   &-name {
-    margin-left: 10px;
+    margin-left: 5vw;
     margin-top: 1vh;
   }
 

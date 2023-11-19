@@ -29,7 +29,11 @@ const anchors = [
 const height = ref(anchors[1]);
 let imgSign = ref(true)
 let map: any = null;
-const targetLatLng = [114.568, 36.394500]
+const targetLatLng = [114.596797, 36.64964]
+let lsBiaoji = [
+    [114.596797, 36.64964], [114.590757, 36.649345], [114.587753, 36.652719], [114.587838, 36.660121], [114.577367, 36.660465], [114.538529, 36.646556], [114.522393, 36.628787], [114.521363, 36.616387], [114.523834, 36.611102]
+]
+let index = 0
 
 const toNowPosition = () => {
     map.panTo(targetLatLng)
@@ -42,7 +46,7 @@ const initMap = async () => {
         plugins: ['AMap.Driving'],
     }).then((AMap) => {
         map = new AMap.Map('container', {
-            center: [114.568, 36.394500],
+            center: [114.596797, 36.64964],
             zoom: 16,
             // showBuildingBlock: false,
             // showLabel: false,
@@ -63,8 +67,62 @@ const initMap = async () => {
             zooms: [7, 22],
         });
         map.add(traffic)
-        const roadNetLayer = new AMap.TileLayer.RoadNet();
-        map.add(roadNetLayer);
+
+        //路线轨迹
+        AMap.plugin('AMap.Driving', function () {
+            var driving = new AMap.Driving({
+                // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+                map: map,
+                hideMarkers: true,
+                policy: AMap.DrivingPolicy.LEAST_TIME
+            })
+
+            // let startLngLat = [114.538529, 36.646556]
+            // let endLngLat = [114.522393, 36.628787]
+            // driving.search(startLngLat, endLngLat, function (status: any, result: any) {
+            //     console.log(result);
+            // })
+
+            let gpsData:any = []
+            let pointPath:any = [lsBiaoji[0]]
+            setInterval(() => {
+                gpsData.push(lsBiaoji[index])
+                index++
+                // nowPoint = lsBiaoji[index]
+                if (gpsData.length > 1) {
+                    let startLngLat = gpsData[gpsData.length-2]
+                    let endLngLat = gpsData[gpsData.length-1]
+                    driving.search(startLngLat, endLngLat, function (status: any, result: any) {
+                        console.log(result);
+                        
+                        if (status === 'complete') {
+                            var distance = result.routes[0].distance;  // 获取路程距离
+                            let steps = result.routes[0].steps
+                            for (let i = 0; i < steps.length; i++) {
+                                let xx = steps[i].path
+                                //  pointPath.push([steps[i].end_location.lng, steps[i].end_location.lat])
+                                for(let j = 0;j<xx.length;j++){
+                                    pointPath.push([xx[j].lng,xx[j].lat])
+                                }
+                            }
+                            console.log(distance, pointPath);
+
+                            // var path = parseRouteTo
+                            // 在地图上绘制轨迹线
+                            var polyline = new AMap.Polyline({
+                                path: pointPath,
+                                strokeColor: '#FF0000',  // 设置轨迹线颜色
+                                strokeWeight: 4,  // 设置轨迹线宽度
+                                zIndex: 20,
+                            });
+                            map.add(polyline);
+                        }
+                    })
+                }
+            }, 4000);
+        })
+        // const roadNetLayer = new AMap.TileLayer.RoadNet();
+        // map.add(roadNetLayer);
 
     })
         .catch((e: any) => {
@@ -72,6 +130,9 @@ const initMap = async () => {
         });
 }
 onMounted(() => {
+    window._AMapSecurityConfig = {
+        securityJsCode: '801ce0f5f1df5e633dd661f9f8a064a7',
+    }
     initMap()
 })
 onUnmounted(() => {

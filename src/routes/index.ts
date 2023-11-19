@@ -11,6 +11,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/dingdan/detail.vue"),
   },
   {
+    path: "/addDdan",
+    component: () => import("@/views/dingdan/addDdan.vue"),
+  },
+  {
+    path: "/sdqizhan",
+    component: () => import("@/views/shihsi/sdqizhan.vue"),
+  },
+  {
     path:'/main',
     redirect: "/shishi",
     component: () => import("@/components/tabbar.vue"),
@@ -18,6 +26,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/shishi",
         component: () => import("@/views/shihsi/index.vue"),
+      },
+      {
+        path: "/zhandian",
+        component: () => import("@/views/sQizhan/zhandian.vue"),
       },
       {
         path: "/jiankong",

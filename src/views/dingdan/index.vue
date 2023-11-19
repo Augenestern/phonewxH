@@ -4,37 +4,23 @@
       <div class="topTitle-name">订单</div>
       <img src="@/assets/订单.png" alt="">
     </div>
+    <div style="width: 100vw;height: 4vh;font-size: 13px;font-weight: 600;position: relative;">
+      <div style="position: absolute; left: 6vw;">全部</div>
+      <div style="position: absolute; right: 24vw;">进行中</div>
+      <div style="position: absolute; right: 4vw;">已完成</div>
+    </div>
     <div
-      style="background-color: #faf8f8; display: flex;align-items: center;flex-direction: column; width: 100%;min-height: 94vh;">
+      style="background-color: #faf8f8; display: flex;align-items: center;flex-direction: column; width: 100%;min-height: 90vh;">
       <div style="height: 1px;"></div>
-      <div v-for="item in dingdanData" class="ddCard" @click="!item.status?toDetail():noToDetail()">
-        <div class="ddCard-top">
-          <div class="ddCard-top-left">站点:{{ item.zhandian }}</div>
-          <div v-if="!item.status" class="ddCard-top-right">正在进行中&nbsp;&nbsp;
-            <div style="width: 10px;height: 10px;background-color: rgb(111, 241, 111); border-radius: 50%;"></div>
-          </div>
-          <div v-else class="ddCard-top-right">已完成&nbsp;&nbsp;
-            <div style="width: 10px;height: 10px;background-color: rgb(188, 188, 188); border-radius: 50%;"></div>
-          </div>
+      <div v-if="role=='管理员'" class="tianjianCard" @click="addDdan">添加订单</div>
+      <div v-for="item in dingdanData" class="ddCard" @click="!item.status ? toDetail() : noToDetail()">
+        <div class="ddCard-one">{{ item.paicheTime }} | {{ item.zhandian }}</div>
+        <div class="ddCard-two"><img style="width: 18px;" src="@/assets/icon38 (1).png" alt=""> {{ item.chepaiNum }}，{{ item.name }}，{{ item.dianhua }}</div>
+        <div class="ddCard-three">
+          <div v-if="!item.status"><span style="color:#319ef8;font-weight: 600;">进行中</span> <span> | <img style="width: 14px;position: relative; top: 2px;" src="@/assets/jiaotongxinxi.png" alt=""> {{ item.gpsPosition }}</span></div>
+          <div v-else>已完成 <span> | {{ item.endTime }}</span></div>
         </div>
-        <div class="ddCard-bottom">
-          <div class="ddCard-bottom-left">
-            <div>{{ item.chepaiNum }}</div>
-            <div class="popo">车牌号</div>
-          </div>
-          <div class="ddCard-bottom-mid">
-            <div>{{ item.paicheTime }}</div>
-            <div class="popo">派车时间</div>
-          </div>
-          <div v-if="!item.status" class="ddCard-bottom-right">
-            <div>{{ item.gpsPosition }}</div>
-            <div class="popo">当前位置</div>
-          </div>
-          <div v-else class="ddCard-bottom-right">
-            <div>{{ item.endTime }}</div>
-            <div class="popo">结束时间</div>
-          </div>
-        </div>
+      <div style="position: absolute;width: 92%;height: 1px;background-color: #e4e4e4; top: 12.4vh;"></div>
       </div>
       <div style="height: 10px;"></div>
     </div>
@@ -46,34 +32,44 @@ import router from '@/routes';
 
 let dingdanData = ref([
   {
-    zhandian: "1112",
+    zhandian: "小城站",
     paicheTime: "11-09 23:00",
     endTime: "11-10 23:00",
     chepaiNum: "冀D-232",
     gpsPosition: "邯郸",
+    name: '张三丰',
+    dianhua: '13828834657',
     status: 0
   },
   {
-    zhandian: "1332",
+    zhandian: "小城站",
     paicheTime: "11-09 23:00",
     endTime: "11-10 23:00",
     chepaiNum: "冀D-442",
     gpsPosition: "石家庄",
+    name: '张三丰',
+    dianhua: '13828834657',
     status: 0
   },
   {
-    zhandian: "1222",
+    zhandian: "小城站",
     paicheTime: "11-09 23:00",
     endTime: "11-10 23:00",
     chepaiNum: "冀D-332",
     gpsPosition: "邯郸",
+    name: '张三丰',
+    dianhua: '13828834657',
     status: 1
   }
 ])
-const toDetail = ()=>{
+let role = ref(localStorage.getItem('role'))
+const toDetail = () => {
   router.push('/ddDetail')
 }
-const noToDetail = ()=>{
+const addDdan = ()=>{
+  router.push('/addDdan')
+}
+const noToDetail = () => {
 }
 onMounted(() => { });
 onUnmounted(() => { });
@@ -94,7 +90,7 @@ onUnmounted(() => { });
   padding-bottom: 2vh;
 
   &-name {
-    margin-left: 10px;
+    margin-left: 5vw;
     margin-top: 1vh;
   }
 
@@ -104,72 +100,49 @@ onUnmounted(() => { });
     margin-top: 1vh;
   }
 }
-
+.tianjianCard{
+  width: 94%;
+  height: 8vh;
+  margin-top: 6px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px 2px #eee;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .ddCard {
   width: 94%;
-  height: 15vh;
-  margin-top: 10px;
+  height: 18vh;
+  margin-top: 6px;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 4px 4px #eee;
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px 2px #eee;
   font-size: 12px;
+  position: relative;
+  padding-left: 4vw;
+  box-sizing: border-box;
 
-  &-top {
-    height: 5vh;
-    width: 100%;
-    // background-color: aqua;
-    border-bottom: 1px solid #eee;
-    position: relative;
-
-    &-left {
-      position: absolute;
-      left: 16px;
-      top: 1vh;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    &-right {
-      position: absolute;
-      right: 10px;
-      top: 1vh;
-      display: flex;
-      align-items: center;
-      font-size: 10px;
-    }
+  &-one {
+    position: absolute;
+    top: 2vh;
+    color: #afafaf;
   }
 
-  &-bottom {
-    height: 10vh;
-    // background-color: #e95757;
-    display: flex;
-    &-left {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
+  &-two {
+    position: absolute;
+    top: 6.5vh;
+  }
 
-    &-mid {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    &-right {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
+  &-three {
+    position: absolute;
+    bottom: 1.8vh;
+    color: #afafaf;
   }
 }
-.popo{
+
+.popo {
   margin-top: 10px;
   color: #a4a3a3;
-}
-</style>
+}</style>

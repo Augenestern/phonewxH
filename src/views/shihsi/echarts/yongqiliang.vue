@@ -16,7 +16,7 @@ watch(()=>props.echartsData,()=>{
 onMounted(() => {
 })
 
-let colors: any = ["#319ef8", "rgba(48, 158, 248,0.9)", 'rgba(48, 158, 248,0)']
+let colors: any = ["#319ef8", "rgba(48, 158, 248,0.5)", 'rgba(48, 158, 248,0.4)']
 let initEcharts = () => {
     myChart = echarts.init(leftEcharts.value as any); 
     let state = reactive({
@@ -59,6 +59,9 @@ let initEcharts = () => {
                 boundaryGap: false,
                 axisTick: {
                     show: false,
+                },
+                axisLine:{
+                    show:false
                 },
                 axisLabel: {
                     interval: "auto",
