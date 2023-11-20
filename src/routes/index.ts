@@ -7,6 +7,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/login.vue"),
   },
   {
+    path: "/changePass",
+    component: () => import("@/views/my/changePass.vue"),
+  },
+  {
     path: "/ddDetail",
     component: () => import("@/views/dingdan/detail.vue"),
   },
@@ -16,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/sdqizhan",
+    name: 'sdqizhan',
     component: () => import("@/views/shihsi/sdqizhan.vue"),
   },
   {

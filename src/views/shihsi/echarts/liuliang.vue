@@ -25,14 +25,14 @@ let initEcharts = () => {
                 textStyle: {
                     fontSize: 12,
                 },
-                formatter: function (params: any) {
-                    var relVal = params[0].name;
-                    for (var i = 0, l = params.length; i < l; i++) {
-                        relVal +=
-                            "<br/>" + params[i].marker + params[i].seriesName + '  ' + params[i].value.toFixed(3) + "H";
-                    }
-                    return relVal;
-                }
+                // formatter: function (params: any) {
+                //     var relVal = params[0].name;
+                //     for (var i = 0, l = params.length; i < l; i++) {
+                //         relVal +=
+                //             "<br/>" + params[i].marker + params[i].seriesName + '  ' + params[i].value.toFixed(3) + "H";
+                //     }
+                //     return relVal;
+                // }
             },
             // legend: {
             //     show: true,
@@ -48,9 +48,9 @@ let initEcharts = () => {
             // },
             grid: {
                 top: "12%",
-                bottom: '14%',
-                left: '8%',
-                right: '3%'
+                bottom: '18%',
+                left: '12%',
+                right: '6%'
             },
             xAxis: {
                 data: props.echartsData.xData,
@@ -65,7 +65,7 @@ let initEcharts = () => {
                 axisLabel: {
                     interval: "auto",
                     formatter: function (value: any) {
-                        return value.slice(5)
+                        return value.slice(11,16)
                     },
                     fontSize: 9,
                     color: 'rgb(108, 109, 109)'
@@ -84,7 +84,7 @@ let initEcharts = () => {
             },
             series: [
                 {
-                    name: '用气量',
+                    name: '流量',
                     data: props.echartsData.y1Data,
                     type: "line",
                     symbol: "circle",

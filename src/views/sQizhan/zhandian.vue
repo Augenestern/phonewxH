@@ -7,28 +7,33 @@
         <div
             style="background-color: #faf8f8; display: flex;align-items: center;flex-direction: column; width: 100%;min-height: 94vh;">
             <div style="height: 1px;"></div>
-            <div v-for="item in qizhanData" class="qzCard" @click="toDetail()">
+            <div v-for="item in qizhanData" class="qzCard" @click="toDetail(item)">
                 <div class="qzCard-top">
                     <div style="position: absolute;top: 50%;transform: translateY(-50%); font-size: 14px;">{{ item.zhandian
                     }}</div>
                     <div style="position: absolute;top: 50%;transform: translateY(-50%); right: 4vw; color: #afafaf;">{{
-                        item.paicheTime }}</div>
+                        item.Time }}</div>
                 </div>
                 <div class="qzCard-bottom">
                     <div
                         style="display: flex; flex-direction: column;align-items: center;justify-content: center; width: 22vw;">
-                        <div style="font-size: 24px; font-weight: 700;">{{ item.yongliang }}</div>
+                        <div style="font-size: 24px; font-weight: 700;">{{ Number(item.yongliang).toFixed(0) }}</div>
                         <div style="font-weight: 600;">今日用量</div>
                     </div>
-                    <div style="display: flex; width: 50vw; margin-left: 8vw; align-items: center;">
-                        <div style="flex: 1;">
-                            <div><span style=" color:#afafaf">压力</span>&nbsp;&nbsp; {{ item.yali }}</div>
-                            <div style="margin-top: 1.4vh;"><span style=" color:#afafaf">温度</span>&nbsp;&nbsp; {{ item.wendu }}</div>
+                    <div style="display: flex; width: 60vw; margin-left: 8vw; align-items: center;">
+                        <div style="flex: 1.1;">
+                            <div><span style=" color:#afafaf">压力</span>&nbsp;&nbsp; {{ Number(item.yali).toFixed(2) }}</div>
+                            <div style="margin-top: 1.4vh;"><span style=" color:#afafaf">温度</span>&nbsp;&nbsp; {{ Number(
+                                item.wendu).toFixed(2)
+                            }}</div>
                         </div>
                         <div style="flex: 1.5;">
-                            <div><span style=" color:#afafaf">前端压力</span> {{ item.qianduanyali }}</div>
-                            <div style="margin-top: 1.4vh;"><span style=" color:#afafaf">流量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-                                item.liuliang }}</div>
+                            <div><span style=" color:#afafaf">前端压力</span> {{ Number(item.qianduanyali).toFixed(2) }}</div>
+                            <div style="margin-top: 1.4vh;"><span
+                                    style=" color:#afafaf">流量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+                                        Number(item.liuliang
+                                        ).toFixed(2)
+                                    }}</div>
                         </div>
                     </div>
                 </div>
@@ -42,30 +47,42 @@
   
 <script setup lang="ts">
 import router from '@/routes';
-
-let qizhanData = ref([
-    {
-        zhandian: "小城站",
-        paicheTime: "11-09 23:00",
-        yali: "25",
-        yongliang: "3",
-        wendu: "25",
-        qianduanyali: '25',
-        liuliang: '25',
-    },
-    {
-        zhandian: "大城站",
-        paicheTime: "11-09 23:00",
-        yali: "25",
-        yongliang: "3",
-        wendu: "25",
-        qianduanyali: '25',
-        liuliang: '25',
-    },])
-const toDetail = () => {
+import dayjs from 'dayjs';
+import { getStationData } from '@/api/production/station'
+import { useMain } from '@/store/home'
+const userMain = useMain()
+let qizhanData: any = ref([
+])
+const toDetail = (items: any) => {
+    userMain.nowZhandian = items
     router.push('/sdqizhan')
 }
-onMounted(() => { });
+const getData = () => {
+    getStationData().then((res) => {
+        let xx = res.data.data
+        let zhandianName:any = []
+        for (let i = 0; i < xx.length; i++) {
+            // console.log(xx[i]);
+            let lsshuju: any = {}
+            zhandianName.push({name:xx[i].name})
+            lsshuju.zhandian = xx[i].name
+            lsshuju.yali = xx[i].data.DTUDataDetail[4].value
+            lsshuju.yongliang = xx[i].todayYQL
+            lsshuju.wendu = xx[i].data.DTUDataDetail[5].value
+            lsshuju.qianduanyali = xx[i].data.DTUDataDetail[11].value
+            lsshuju.liuliang = xx[i].data.DTUDataDetail[3].value
+            lsshuju.zongliang = xx[i].data.DTUDataDetail[2].value
+            lsshuju.xielong = xx[i].data.DTUDataDetail[8].value
+            lsshuju.dianchi = xx[i].data.DTUDataDetail[7].value
+            lsshuju.Time = dayjs().format('YYYY-MM-DD HH:mm')
+            qizhanData.value.push(lsshuju)
+        }
+        userMain.zdName = zhandianName
+    })
+}
+onMounted(() => {
+    getData()
+});
 onUnmounted(() => { });
 </script>
   
@@ -116,5 +133,6 @@ onUnmounted(() => { });
         position: relative;
         height: 5.6vh;
     }
-}</style>
+}
+</style>
   

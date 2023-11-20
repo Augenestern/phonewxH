@@ -12,7 +12,7 @@
                 <div style="flex: 6;">{{ zhandianName }}</div>
                 <div style="flex: 1.5;"><img style="width: 28px;" src="@/assets/记事本 (1).png" alt=""
                         @click="showXuanze = true"></div>
-                <van-action-sheet v-model:show="showXuanze" :actions="actions" @select="onSelect" />
+                <van-action-sheet v-model:show="showXuanze" :actions="userMain.zdName" @select="onSelect" />
             </div>
             <div class="bottomBox-item">
                 <div style="flex: 3;">位置</div>
@@ -21,10 +21,11 @@
             </div>
             <div class="bottomBox-item">
                 <div style="flex: 3;">车辆</div>
-                <div style="flex: 6;">冀H12334</div>
+                <div style="flex: 6;">{{ carName }}</div>
                 <div style="flex: 1.5;">
-                    <img style="width: 28px;" src="@/assets/车辆登记.png" alt="" @click="showXuanze = true">
+                    <img style="width: 28px;" src="@/assets/车辆登记.png" alt="" @click="showXuanzeChe = true">
                 </div>
+                <van-action-sheet v-model:show="showXuanzeChe" :actions="actionsCar" @select="onSelectCar" />
             </div>
             <div class="bottomBox-item">
                 <div style="flex: 3;">派送时间</div>
@@ -47,14 +48,24 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 let showXuanze = ref(false)
+let showXuanzeChe = ref(false)
 let showXuanzeTime = ref(false)
 let showXuanzeMinTime = ref(false)
-const actions = [
-    { name: '小城站' },
-    { name: '选项二' },
-    { name: '选项三' }
+import { useMain } from '@/store/home'
+const userMain :any = useMain()
+
+// const actions = [
+//     { name: '小城站' },
+//     { name: '选项二' },
+//     { name: '选项三' }
+// ];
+const actionsCar = [
+    { name: '冀H1' },
+    { name: '冀H2' },
+    { name: '冀H3' }
 ];
-let zhandianName = ref(actions[0].name)
+let zhandianName = ref(userMain.zdName[0].name)
+let carName = ref(actionsCar[0].name)
 onMounted(() => {
 })
 onUnmounted(() => {
@@ -68,6 +79,11 @@ const quxiao = () => {
 const onSelect = (item: any) => {
     zhandianName.value = item.name
     showXuanze.value = false;
+}
+//车辆选择
+const onSelectCar = (item: any) => {
+    carName.value = item.name
+    showXuanzeChe.value = false;
 }
 
 //日期和时间选择

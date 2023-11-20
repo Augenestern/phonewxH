@@ -2,10 +2,10 @@
   <div>
     <div class="topTitle">
       <div class="topTitle-name">气站</div>
-      <img  src="@/assets/数据统计.png" alt="">
+      <img src="@/assets/数据统计.png" alt="">
     </div>
-    <van-tabs v-model:active="active" @click-tab="onClickTab" line-width="33vw" line-height="1px" sticky animated swipeable
-      offset-top="4vh">
+    <van-tabs v-model:active="active" @click-tab="onClickTab" line-width="33vw" line-height="1px" sticky animated
+      swipeable offset-top="4vh">
       <van-tab title="实时">
         <tabs1></tabs1>
       </van-tab>
@@ -26,7 +26,7 @@ import tabs3 from './tabs/tabs3.vue'
 
 const active = ref(0);
 const onClickTab = ({ title }) => {
-  console.log(active.value, title);
+  // console.log(active.value, title);
 };
 onMounted(() => { });
 onUnmounted(() => { });
@@ -44,15 +44,16 @@ onUnmounted(() => { });
   font-weight: 600;
   display: flex;
   align-items: center;
-  &-name{
+
+  &-name {
     margin-left: 5vw;
     margin-top: 1vh;
   }
-  img{
+
+  img {
     margin-left: 4px;
     width: 18px;
     margin-top: 1vh;
   }
 }
-
 </style>

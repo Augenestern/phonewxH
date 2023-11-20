@@ -20,13 +20,14 @@
 import tabs1 from './tabs/tabs1.vue'
 import tabs2 from './tabs/tabs2.vue'
 import tabs3 from './tabs/tabs3.vue'
-const onClickLeft = () => history.back();
 
+const onClickLeft = () => history.back();
 const active = ref(0);
 const onClickTab = ({ title }) => {
-    console.log(active.value, title);
+    // console.log(active.value, title);
 };
-onMounted(() => { });
+onMounted(() => { 
+});
 onUnmounted(() => { });
 </script>
   
