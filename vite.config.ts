@@ -30,10 +30,25 @@ export default defineConfig({
 			dts: "src/components.d.ts",
 		}),
 	],
+	build: {
+		assetsInlineLimit: 0
+	},
 	resolve: {
 		// ↓路径别名
 		alias: {
 			"@": resolve(__dirname, "./src")
 		}
-	}
+	},
+	// server: {
+	// 	open: true,
+	// 	cors: true,
+	// 	proxy: {
+	// 		'/abc': {
+	// 			target: 'https://aip.baidubce.com',
+	// 			changeOrigin: true,
+	// 			secure: false, //只有代理https 地址需要次选项
+	// 			rewrite: (path) => path.replace(/^\/abc/, ''),
+	// 		}
+	// 	}
+	// }
 })

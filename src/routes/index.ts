@@ -7,6 +7,30 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/login.vue"),
   },
   {
+    path: "/zhuce",
+    component: () => import("@/views/zhuce.vue"),
+  },
+  {
+    path: "/pairu",
+    component: () => import("@/components/ruku/pairu.vue"),
+  },
+  {
+    path: "/paichu",
+    component: () => import("@/components/ruku/paichu.vue"),
+  },
+  {
+    path: "/chuku",
+    component: () => import("@/components/ruku/chuku.vue"),
+  },
+  {
+    path: "/shzhandian",
+    component: () => import("@/components/ruku/shzhandian.vue"),
+  },
+  {
+    path: "/kapian",
+    component: () => import("@/components/ruku/kapian.vue"),
+  },
+  {
     path: "/changePass",
     component: () => import("@/views/my/changePass.vue"),
   },
@@ -15,19 +39,54 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/dingdan/detail.vue"),
   },
   {
+    path: "/ssdetail",
+    component: () => import("@/views/shihsi/tabs/ssdetail.vue"),
+  },
+  {
+    path: "/bianji",
+    component: () => import("@/views/dingdan/bianji.vue"),
+  },
+  {
+    path: "/callback",
+    component: () => import("@/views/callback.vue"),
+  },
+  // {
+  //   path: "/shouquan",
+  //   component: () => import("@/views/shouquan.vue"),
+  // },
+  {
     path: "/addDdan",
     component: () => import("@/views/dingdan/addDdan.vue"),
   },
   {
-    path: "/sdqizhan",
-    name: 'sdqizhan',
-    component: () => import("@/views/shihsi/sdqizhan.vue"),
+    path: "/awaitGl",
+    component: () => import("@/views/awaitGl/awaitGl.vue"),
   },
   {
-    path:'/main',
+    path: "/sdqizhan",
+    redirect: "/first",
+    name: 'sdqizhan',
+    component: () => import("@/views/shihsi/sdqizhan.vue"),
+    children: [
+      {
+        path: "/first",
+        component: () => import("@/views/shihsi/first.vue"),
+      },
+      {
+        path: "/second",
+        component: () => import("@/views/shihsi/second.vue"),
+      },
+      {
+        path: "/third",
+        component: () => import("@/views/shihsi/third.vue"),
+      }
+    ]
+  },
+  {
+    path: '/main',
     redirect: "/shishi",
     component: () => import("@/components/tabbar.vue"),
-    children:[
+    children: [
       {
         path: "/shishi",
         component: () => import("@/views/shihsi/index.vue"),
@@ -60,10 +119,32 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/") {
-    next({ path: "/login" })
+  const token = localStorage.getItem('token')
+  const role = localStorage.getItem('role')
+  if (token && role) {
+    if (to.path === "/login" || to.path == '/') {
+      if (role == '管理员') {
+        next({ path: "/zhandian" })
+      } else if (role == '气站管理员') {
+        next({ path: "/shishi" })
+      } else if (role == '司机') {
+        next({ path: "/dingdan" })
+      } else if (role == '游客') {
+        next({ path: "/awaitGl" })
+      }
+    } else {
+      next()
+    }
   } else {
-    next()
+    if (to.path !== "/login") {
+      if (to.path == "/zhuce" || to.path == '/awaitGl') {
+        next()
+      } else {
+        next({ path: "/login" })
+      }
+    } else {
+      next()
+    }
   }
 })
 // 3导出路由   然后去 main.ts 注册 router.ts

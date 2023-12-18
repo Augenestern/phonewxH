@@ -9,3 +9,12 @@ export function getLoginData(params:any) {
     });
 }
 
+
+export function changeRolePasswd(payload: any) {
+    return request({
+      url: "/user/changePassword",
+      method: "post",
+      data: payload,
+    });
+  }
+

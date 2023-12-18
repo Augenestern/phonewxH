@@ -1,24 +1,26 @@
 <template>
   <div>
-    <div class="topTitle">
-      <div class="topTitle-name">我的</div>
-      <img src="@/assets/我的小.png" alt="">
-    </div>
+    <!-- <div class="topTitle">
+      <div class="topTitle-name">我的</div> -->
+      <!-- <img src="@/assets/我的小.png" alt=""> -->
+    <!-- </div> -->
     <div style="background-color: #faf8f8;; min-height: 92vh;">
       <div style="height: 10px;"></div>
       <div class="grCard">
         <div style="width: 80%; height: 50%; display: grid; grid-template-columns: 1fr 3fr;  gap: 10px;">
-          <div style=";grid-row: span 2;"><img src="@/assets/111.png" alt="" style="width: 60px; border-radius: 50%;">
+          <div style=";grid-row: span 2;">
+            <img v-if="ls.AvatarUrl" :src="ls.AvatarUrl" alt="" style="width: 70px; border-radius: 50%;">
+            <img v-else src="@/assets/111.png" alt="" style="width: 70px; border-radius: 50%;">
           </div>
-          <div style="font-size: 14px; font-weight: 600; padding-top: 6px;">{{ userMain.name }}</div>
-          <div style="font-size: 12px; color: #8a8989;">账号:{{ userMain.account }}</div>
+          <div style="font-size: 1.0625rem; font-weight: 600; padding-top: 6px;">{{ ls.name }}</div>
+          <div style="font-size: 1rem; color: #8a8989;">账号:{{ ls.account }}</div>
         </div>
       </div>
       <div style="margin-top: 4vh;">
-        <van-cell style=" font-size: 12px;" title="手机号" :value="userMain.phone" />
-        <van-cell style=" font-size: 12px;" title="性别" :value="userMain.sex" />
-        <van-cell style=" font-size: 12px;" title="修改密码" is-link to="/changePass" />
-        <van-cell style=" font-size: 12px;" title="退出登录" is-link @click="quit" />
+        <van-cell style=" font-size:1rem;" title="手机号" :value="ls.phone" />
+        <!-- <van-cell style=" font-size:0.75rem;" title="性别" :value="ls.sex" /> -->
+        <van-cell style=" font-size:1rem;" title="修改密码" is-link to="/changePass" />
+        <van-cell style=" font-size:1rem;" title="退出登录" is-link @click="quit" />
       </div>
     </div>
   </div>
@@ -27,10 +29,14 @@
 <script setup lang="ts">
 import { showConfirmDialog } from 'vant';
 import { createPinia  } from 'pinia';
+import { getRoleName } from '@/api/wxLogin';
 const pinia:any = createPinia()
-import { useMain } from "@/store/home";
-const userMain: any = useMain().userInfo;
+import { showDialog } from 'vant'
+// import { useMain } from "@/store/home";
+// const userMain: any = JSON.parse(JSON.stringify(useMain().userInfo));
+// const userMain: any = useMain().userInfo;
 const router = new (useRouter as any)
+let ls: any = JSON.parse(localStorage.getItem('userInfo'))
 
 const quit = () => {
   showConfirmDialog({
@@ -39,15 +45,37 @@ const quit = () => {
     //     '返回到登录页面？',-
   })
     .then(() => {
+      router.push('/login')
       localStorage.clear()
       pinia.reset()
-      router.push('/login')
+      console.log(111);
     })
     .catch(() => {
       // on cancel
     });
 }
-onMounted(() => { });
+const getRole = () => {
+    let ls: any = JSON.parse(localStorage.getItem('userInfo'))
+    console.log(ls);
+    let params = {
+        phone: ls.phone
+    }
+    getRoleName(params).then((res) => {
+        if (res.data.data != localStorage.getItem('role')) {
+            showDialog({
+                message: '用户角色已改变，请重新登录',
+            }).then(() => {
+                router.push('/login')
+                localStorage.clear()
+                pinia.reset()
+
+            });
+        }
+    })
+}
+onMounted(() => {
+  getRole()
+ });
 onUnmounted(() => { });
 </script>
 
@@ -55,19 +83,17 @@ onUnmounted(() => { });
 .topTitle {
   position: sticky;
   top: 0;
-  height: 4vh;
+  height: 6vh;
   // background-color: aqua;
   z-index: 10;
   background-color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   display: flex;
   align-items: center;
-  padding-bottom: 2vh;
+  justify-content: center;
 
   &-name {
-    margin-left: 5vw;
-    margin-top: 1vh;
   }
 
   img {
@@ -85,7 +111,7 @@ onUnmounted(() => { });
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0px 0px 4px 4px #eee;
-  font-size: 12px;
+  font-size: 1rem;;
   display: flex;
   align-items: center;
   justify-content: center;

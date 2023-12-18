@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev:staging": "vite dev --mode staging",
+    "build:staging": "vite build --mode staging",
+    "build-only-staging": "vite build --mode staging",
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
@@ -15,9 +18,11 @@
     "echarts": "^5.4.2",
     "pinia": "^2.0.36",
     "pinia-plugin-persistedstate": "^3.2.0",
+    "tesseract.js": "^4.1.4",
     "vant": "^4.3.2",
     "vue": "^3.2.47",
-    "vue-router": "4"
+    "vue-router": "4",
+    "weixin-js-sdk": "^1.6.5"
   },
   "devDependencies": {
     "@types/node": "^20.1.7",

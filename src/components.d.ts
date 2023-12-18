@@ -9,9 +9,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    Chuku: typeof import('./components/ruku/chuku.vue')['default']
+    Kapian: typeof import('./components/ruku/kapian.vue')['default']
+    Paichu: typeof import('./components/ruku/paichu.vue')['default']
+    Pairu: typeof import('./components/ruku/pairu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Shzhandian: typeof import('./components/ruku/shzhandian.vue')['default']
     Tabbar: typeof import('./components/tabbar.vue')['default']
   }
 }

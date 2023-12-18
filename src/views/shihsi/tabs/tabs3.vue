@@ -1,50 +1,49 @@
 <template>
     <div>
         <div style="background-color: #eee;">
-            <div style="height: 0.1px;"></div>
-            <div class="echCard cardOne">
+            <div class="echCard cardOne" @click="toHisyql">
                 <div class="cardOne-title"
-                    style="height: 5vh; font-size: 13px;font-weight: 600; width: 100%;display: flex;align-items: center;">
-                    &nbsp; &nbsp;&nbsp;数据概况 | {{ userMain.zhandian }}</div>
-                <div class="cardOne-hang" style="border-bottom:1px solid #a5d1f5;">
+                    style="height: 5vh; font-size: 1.0625rem;font-weight: 600; width: 100%;display: flex;align-items: center;">
+                    &nbsp; &nbsp;&nbsp;数据概况 | {{ useMain().nowZhandian.zhandian }}</div>
+                <div class="cardOne-hang" style="border-bottom:1px solid #ebebeb;">
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.yongliang).toFixed(2) }}</div>
-                        <div class="cardone-texFont">用气量</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.yongliang).toFixed(2) }}</div>
+                        <div class="cardone-texFont">今日用气量</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.zongliang).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.zongliang).toFixed(2) }}</div>
                         <div class="cardone-texFont">总量</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.wendu).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.wendu).toFixed(2) }}</div>
                         <div class="cardone-texFont">温度</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.yali).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.yali).toFixed(2) }}</div>
                         <div class="cardone-texFont">压力</div>
                     </div>
                 </div>
                 <div class="cardOne-hang">
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.liuliang).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.liuliang).toFixed(2) }}</div>
                         <div class="cardone-texFont">流量</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.qianduanyali).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.qianduanyali).toFixed(2) }}</div>
                         <div class="cardone-texFont">前端压力</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.xielong).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.xielong).toFixed(2) }}</div>
                         <div class="cardone-texFont">泄露</div>
                         <div class="cardLine"></div>
                     </div>
                     <div class="cardOne-hang-lie">
-                        <div class="cardone-numFont">{{ Number(userMain.dianchi).toFixed(2) }}</div>
+                        <div class="cardone-numFont">{{ Number(useMain().nowZhandian.dianchi).toFixed(2) }}</div>
                         <div class="cardone-texFont">电池</div>
                     </div>
                 </div>
@@ -77,9 +76,9 @@ import yali from '../echarts/yali.vue'
 import qianduanyali from '../echarts/qianduanyali.vue'
 import wendu from '../echarts/wendu.vue'
 import {getStationEchaData} from '@/api/production/station'
+import { getStationData } from '@/api/production/station'
 import { useMain } from '@/store/home'
-const userMain = JSON.parse(JSON.stringify(useMain().nowZhandian))
-
+import router from '@/routes'
 let yongqiliangData = reactive({
     xData: [] as any,
     y1Data: [] as any
@@ -119,7 +118,8 @@ const getData = ()=>{
     let sTime1 = dayjs(previousDate).format('YYYY-MM-DD HH:mm:ss')
     
     let params = {
-        collStr:'b1',
+        stationId: useMain().nowZhandian.zdId,
+        userId: userInfo._id,
         interval:'Hour',
         startTime:sTime1,
         endTime:eTime1
@@ -155,7 +155,43 @@ const getData = ()=>{
         }
     })
 }
+
+const toHisyql = ()=>{
+    router.push('/ssdetail')
+}
+let userInfo:any = JSON.parse(localStorage.getItem('userInfo'))
+let qizhanData: any = ref([])
+const getGkuanData = () => {
+    let params = {
+        userId: userInfo._id
+    }
+    getStationData(params).then((res) => {
+        let xx = res.data.data
+        console.log(res);
+        for (let i = 0; i < xx.length; i++) {
+            // console.log(xx[i]);
+            let lsshuju: any = {}
+            lsshuju.zhandian = xx[i].name
+            lsshuju.yali = xx[i].data.DTUDataDetail[4].value
+            lsshuju.yongliang = xx[i].todayYQL
+            lsshuju.zdId = xx[i]._id
+            lsshuju.wendu = xx[i].data.DTUDataDetail[5].value
+            lsshuju.qianduanyali = xx[i].data.DTUDataDetail[11].value
+            lsshuju.liuliang = xx[i].data.DTUDataDetail[3].value
+            lsshuju.zongliang = xx[i].data.DTUDataDetail[2].value
+            lsshuju.xielong = xx[i].data.DTUDataDetail[8].value
+            lsshuju.dianchi = xx[i].data.DTUDataDetail[7].value
+            lsshuju.Time = dayjs().format('YYYY-MM-DD HH:mm')
+            qizhanData.value.push(lsshuju)
+        }
+        useMain().nowZhandian = qizhanData.value[0]
+    })
+}
 onMounted(() => {
+    if(Object.keys(useMain().nowZhandian).length===0){
+        console.log(11);
+        getGkuanData()
+    }
     getData()
 })
 onUnmounted(() => {
@@ -170,7 +206,7 @@ onUnmounted(() => {
 
 .cardone-texFont {
     margin-top: 8px;
-    font-size: 12px;
+    font-size: 1rem;
     color: #6c6d6d;
 }
 
@@ -194,8 +230,9 @@ onUnmounted(() => {
     height: 30vh;
     display: flex;
     flex-direction: column;
-    font-size: 12px;
-
+    font-size: 1rem;
+    margin-top: 0px;
+    border-top: 1px solid #ebebeb;
     &-title{
         flex: 1.7;
         // background-color: #319ef8;

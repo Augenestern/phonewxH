@@ -155,7 +155,7 @@ onUnmounted(() => {
 }
 
 .echTitle {
-    font-size: 13px;
+    font-size: 1.0625rem;
     font-weight: 600;
     width: 100%;
     height: 14%;

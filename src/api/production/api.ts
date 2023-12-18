@@ -35,7 +35,6 @@ export const loginAPI = (data: ReqLogin): Res<string> =>
 export const StatusAPI = (data: ReqStatus): Res<null> =>
     instance.post(`/productCategory?ids=${data.id}&navStatus=${data.navStatus}`);
  
- 
 //  get请求，没参数，
 export const FlashSessionListApi = (): Res<null> =>
     instance.get("/flashSession/list");

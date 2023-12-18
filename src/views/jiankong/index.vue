@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="topTitle">
-      <div class="topTitle-name">监控</div>
-      <img src="@/assets/监控3.png" alt="">
+    <!-- <div class="topTitle">
+      <div class="topTitle-name">监控</div> -->
+      <!-- <img src="@/assets/监控3.png" alt=""> -->
      
-    </div>
+    <!-- </div> -->
     <div style="background-color: #eee;">my</div>
   </div>
 </template>
@@ -19,19 +19,18 @@ onUnmounted(() => { });
 .topTitle {
   position: sticky;
   top: 0;
-  height: 4vh;
+  height: 6vh;
   // background-color: aqua;
   z-index: 10;
   background-color: #fff;
-  font-size: 16px;
+  font-size: 1.25rem;
   font-weight: 600;
   display: flex;
   align-items: center;
-  padding-bottom: 2vh;
+  justify-content: center;
+  // padding-bottom: 2vh;
 
   &-name {
-    margin-left: 5vw;
-    margin-top: 1vh;
   }
 
   img {
